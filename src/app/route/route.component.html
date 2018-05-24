@@ -1,3 +1,29 @@
-<p>
-  route works!
-</p>
+<mat-card class="comparison-containter" *ngIf="!fetching">
+  <mat-card-title><h2>Trasa floty</h2></mat-card-title>
+  <mat-card-content>
+    <app-map highlight="highlight" data="orders"></app-map>
+    <mat-tab-group>
+      <mat-tab label="Informacje">
+        <h4 mat-line>Data rozpoczęcia: {{routeDetails.startDate}}</h4>
+        <h4 mat-line>Data zakończenia: {{routeDetails.endDate}}</h4>
+        <h4 mat-line>Opis: {{routeDetails.description}}</h4>
+      </mat-tab>
+      <mat-tab *ngFor="let vehicle of vehiclePaths" label="{{vehicle.name}}">
+        <h4 mat-line>Samochod: {{vehicle.name}}</h4>
+        <h4 mat-line>Opis: {{vehicle.description}}</h4>
+        <h4 mat-line>Kierowca: {{vehicle.driver}}</h4>
+        <mat-chip-list>
+          <mat-chip
+            color="accent"
+            selected="true"
+            *ngFor="let order of vehicle.orders"
+            matTooltip="{{tooltipContent(order)}}"
+            (click)="chooseHighlight(order)">
+            {{order.deport?order.position.name:order.name}}
+          </mat-chip>
+        </mat-chip-list>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
+<div *ngIf="fetching"><mat-spinner></mat-spinner></div>
